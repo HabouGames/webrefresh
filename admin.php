@@ -6,7 +6,7 @@
 // ════════════════════════════════════════════
 
 // ── KONFIGURATION (anpassen) ──────────────────
-define('ADMIN_EMAIL',    'deine@email.de');   // Deine Login-E-Mail
+define('ADMIN_EMAIL',    'leon.kersten96@gmail.com');   // Deine Login-E-Mail
 define('SESSION_DAUER',  3600);               // Eingeloggt bleiben für 1 Stunde (Sekunden)
 define('CODE_GUELTIG',   600);                // 2FA-Code gültig für 10 Minuten
 define('SITE_NAME',      'WebRefresh');
