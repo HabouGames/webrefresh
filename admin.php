@@ -6,7 +6,7 @@
 // ════════════════════════════════════════════
 
 // ── KONFIGURATION (anpassen) ──────────────────
-define('EMPFAENGER_EMAIL', 'deine@email.de');        // Wohin sollen Anfragen gehen?
+define('EMPFAENGER_EMAIL', 'hallo@neuerlook.com');        // Wohin sollen Anfragen gehen?
 define('BETREFF_PREFIX',   '[NeuAuftritt] Neue Anfrage');
 define('ERLAUBTE_ORIGIN',  '');                       // Leer = gleiche Domain, sonst z.B. 'https://deine-domain.de'
 // ─────────────────────────────────────────────
