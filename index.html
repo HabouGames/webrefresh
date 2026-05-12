@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuErLook – Moderne Websites für lokale Betriebe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@300;400;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Nunito:wght@400;600;700;800&family=Raleway:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ════════════════════════════════════
+   DESIGN SWITCHER BAR
+════════════════════════════════════ */
+#design-bar {
+  position: fixed; bottom: 0; left: 0; right: 0; z-index: 9999;
+  background: #111; padding: 10px 20px;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.4);
+  font-family: sans-serif;
+}
+#design-bar .bar-section {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+}
+#design-bar .bar-divider {
+  width: 1px; height: 28px; background: rgba(255,255,255,0.15); margin: 0 6px;
+}
+.bar-label {
+  color: #666; font-size: 10px; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; white-space: nowrap;
+}
+.style-btn {
+  padding: 6px 14px; border-radius: 5px; border: 2px solid transparent;
+  font-size: 12px; font-weight: 600; cursor: pointer;
+  transition: all .2s; white-space: nowrap;
+}
+.style-btn.active { border-color: #fff; transform: scale(1.05); }
+.style-btn[data-style="klassisch"]     { background:#003366; color:#fff; }
+.style-btn[data-style="warm"]          { background:#8B4513; color:#fff; }
+.style-btn[data-style="professionell"] { background:#1e4d6b; color:#fff; }
+.style-btn[data-style="frisch"]        { background:#1e5c3a; color:#fff; }
+.style-btn[data-style="premium"]       { background:linear-gradient(135deg,#8B6914,#C9A84C); color:#fff; }
+.layout-btn {
+  padding: 6px 14px; border-radius: 5px; border: 2px solid rgba(255,255,255,0.2);
+  font-size: 12px; font-weight: 600; cursor: pointer; color: #ccc;
+  background: rgba(255,255,255,0.08); transition: all .2s; white-space: nowrap;
+}
+.layout-btn.active { border-color: #fff; color: #fff; background: rgba(255,255,255,0.18); }
+.upgrade-tag {
+  margin-left: auto;
+  background: linear-gradient(135deg,#8B6914,#C9A84C);
+  color: #fff; font-size: 10px; font-weight: 700;
+  padding: 5px 12px; border-radius: 20px; white-space: nowrap;
+}
+
+/* ════════════════════════════════════
+   BASE RESETS
+════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { overflow-x: hidden; padding-bottom: 56px; }
+
+/* ════════════════════════════════════
+   THEME VARIABLES
+════════════════════════════════════ */
+[data-theme="klassisch"] {
+  --bg:#f4f6f9; --white:#fff; --primary:#003366; --primary-dark:#002244;
+  --accent:#c8a84b; --text:#1a1a2e; --muted:#5a6478; --border:#d4dae6;
+  --card-bg:#fff; --hero-bg:#003366;
+  font-family:'Source Sans 3',Georgia,serif;
+}
+[data-theme="klassisch"] h1,[data-theme="klassisch"] h2,[data-theme="klassisch"] h3 { font-family:'Lora',Georgia,serif; }
+
+[data-theme="warm"] {
+  --bg:#fdf6ee; --white:#fffdf9; --primary:#7a3b1e; --primary-dark:#5c2c12;
+  --accent:#e07b39; --text:#2d1a0e; --muted:#7a6050; --border:#e8d5c4;
+  --card-bg:#fff9f3; --hero-bg:#7a3b1e;
+  font-family:'Nunito',sans-serif;
+}
+[data-theme="warm"] h1,[data-theme="warm"] h2,[data-theme="warm"] h3 { font-family:'Nunito',sans-serif; }
+
+[data-theme="professionell"] {
+  --bg:#f0f4f8; --white:#fff; --primary:#1e4d6b; --primary-dark:#153a52;
+  --accent:#3a9fc4; --text:#1a2d3d; --muted:#5c7a8a; --border:#c8d8e4;
+  --card-bg:#fff; --hero-bg:#1e4d6b;
+  font-family:'Raleway',sans-serif;
+}
+[data-theme="professionell"] h1,[data-theme="professionell"] h2,[data-theme="professionell"] h3 { font-family:'Raleway',sans-serif; font-weight:700; }
+
+[data-theme="frisch"] {
+  --bg:#f2f8f4; --white:#fff; --primary:#1e5c3a; --primary-dark:#154429;
+  --accent:#4caf72; --text:#1a2d22; --muted:#4a6b55; --border:#c4dece;
+  --card-bg:#fff; --hero-bg:#1e5c3a;
+  font-family:'Source Sans 3',sans-serif;
+}
+[data-theme="frisch"] h1,[data-theme="frisch"] h2,[data-theme="frisch"] h3 { font-family:'Merriweather',Georgia,serif; }
+
+[data-theme="premium"] {
+  --bg:#0e0c08; --white:#f8f4ec; --primary:#c9a84c; --primary-dark:#a8882e;
+  --accent:#e8c96a; --text:#f0ead8; --muted:#9a8e72; --border:rgba(201,168,76,.2);
+  --card-bg:#18160e; --hero-bg:#0e0c08;
+  font-family:'Crimson Pro',Georgia,serif;
+  background:#0e0c08;
+}
+[data-theme="premium"] h1,[data-theme="premium"] h2,[data-theme="premium"] h3 { font-family:'Playfair Display',Georgia,serif; }
+
+/* ════════════════════════════════════
+   SHARED LAYOUT
+════════════════════════════════════ */
+body { background:var(--bg); color:var(--text); transition:background .35s,color .35s; }
+
+/* NAV */
+.nav {
+  position:sticky; top:0; z-index:100;
+  background:var(--hero-bg); padding:0 52px; height:64px;
+  display:flex; align-items:center; justify-content:space-between;
+  box-shadow:0 2px 16px rgba(0,0,0,.18); transition:background .35s;
+}
+.nav-logo { font-size:20px; font-weight:700; color:#fff; text-decoration:none; letter-spacing:-.3px; }
+[data-theme="klassisch"] .nav-logo { font-family:'Lora',serif; }
+[data-theme="premium"] .nav-logo { font-family:'Playfair Display',serif; color:var(--accent); }
+.nav-logo em { color:var(--accent); font-style:normal; }
+.nav-links { display:flex; gap:30px; list-style:none; }
+.nav-links a { color:rgba(255,255,255,.75); font-size:14px; font-weight:500; text-decoration:none; transition:color .2s; }
+.nav-links a:hover { color:#fff; }
+.nav-cta {
+  background:var(--accent); color:#fff; padding:10px 22px;
+  border-radius:5px; font-size:14px; font-weight:700; text-decoration:none;
+  transition:opacity .2s; white-space:nowrap;
+}
+[data-theme="premium"] .nav-cta { color:#0e0c08; }
+.nav-cta:hover { opacity:.88; }
+
+/* ════════════════════════════════════
+   LAYOUT A: MIT BILDERN
+════════════════════════════════════ */
+
+/* Hero with full background image */
+[data-layout="bilder"] .hero {
+  position:relative; overflow:hidden;
+  min-height:92vh; display:flex; align-items:center;
+}
+[data-layout="bilder"] .hero-img {
+  position:absolute; inset:0; z-index:0;
+  background:url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80') center/cover no-repeat;
+}
+[data-layout="bilder"] .hero-overlay {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(to right, rgba(0,0,0,.75) 0%, rgba(0,0,0,.3) 100%);
+}
+[data-theme="warm"][data-layout="bilder"] .hero-img {
+  background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80');
+}
+[data-theme="frisch"][data-layout="bilder"] .hero-img {
+  background-image:url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1600&q=80');
+}
+[data-theme="professionell"][data-layout="bilder"] .hero-img {
+  background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80');
+}
+[data-theme="premium"][data-layout="bilder"] .hero-img {
+  background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80');
+}
+[data-layout="bilder"] .hero-inner {
+  position:relative; z-index:2;
+  max-width:1100px; margin:0 auto; padding:80px 52px;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+}
+[data-layout="bilder"] .hero-title { color:#fff !important; }
+[data-layout="bilder"] .hero-sub   { color:rgba(255,255,255,.8) !important; }
+
+/* Service cards with images */
+[data-layout="bilder"] .s-card-img {
+  height:160px; border-radius:8px 8px 0 0; overflow:hidden; margin:-32px -28px 20px;
+  display:block;
+}
+[data-layout="bilder"] .s-card-img img {
+  width:100%; height:100%; object-fit:cover; display:block;
+  transition:transform .4s;
+}
+[data-layout="bilder"] .s-card:hover .s-card-img img { transform:scale(1.05); }
+
+/* Team / About image */
+[data-layout="bilder"] .about-img {
+  border-radius:12px; overflow:hidden; height:320px;
+}
+[data-layout="bilder"] .about-img img {
+  width:100%; height:100%; object-fit:cover;
+}
+[data-layout="bilder"] .about-split {
+  display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center;
+}
+
+/* ════════════════════════════════════
+   LAYOUT B: OHNE BILDER (typografisch)
+════════════════════════════════════ */
+[data-layout="clean"] .hero {
+  background:var(--hero-bg); padding:80px 52px 90px;
+  transition:background .35s; position:relative; overflow:hidden;
+}
+[data-layout="clean"] .hero-img,
+[data-layout="clean"] .hero-overlay,
+[data-layout="clean"] .s-card-img,
+[data-layout="clean"] .about-img { display:none; }
+[data-layout="clean"] .hero-inner {
+  max-width:1100px; margin:0 auto;
+  display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center;
+  position:relative; z-index:2;
+}
+[data-layout="clean"] .about-split { display:block; }
+
+/* ════════════════════════════════════
+   LAYOUT C: HYBRID (1 Hero-Bild, Rest clean)
+════════════════════════════════════ */
+[data-layout="hybrid"] .hero {
+  position:relative; overflow:hidden; min-height:80vh; display:flex; align-items:center;
+}
+[data-layout="hybrid"] .hero-img {
+  position:absolute; inset:0; z-index:0;
+  background:url('https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1600&q=80') center/cover no-repeat;
+}
+[data-theme="warm"][data-layout="hybrid"] .hero-img { background-image:url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1600&q=80'); }
+[data-theme="frisch"][data-layout="hybrid"] .hero-img { background-image:url('https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1600&q=80'); }
+[data-theme="professionell"][data-layout="hybrid"] .hero-img { background-image:url('https://images.unsplash.com/photo-1497366216548-37526070297c?w=1600&q=80'); }
+[data-theme="premium"][data-layout="hybrid"] .hero-img { background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=1600&q=80'); }
+[data-layout="hybrid"] .hero-overlay {
+  position:absolute; inset:0; z-index:1;
+  background:linear-gradient(to right, rgba(0,0,0,.7) 0%, rgba(0,0,0,.25) 100%);
+}
+[data-layout="hybrid"] .hero-inner {
+  position:relative; z-index:2;
+  max-width:1100px; margin:0 auto; padding:80px 52px;
+  display:grid; grid-template-columns:1.2fr 1fr; gap:60px; align-items:center;
+}
+[data-layout="hybrid"] .hero-title { color:#fff !important; }
+[data-layout="hybrid"] .hero-sub   { color:rgba(255,255,255,.8) !important; }
+[data-layout="hybrid"] .s-card-img,
+[data-layout="hybrid"] .about-img  { display:none; }
+[data-layout="hybrid"] .about-split { display:block; }
+
+/* ════════════════════════════════════
+   HERO CONTENT (shared)
+════════════════════════════════════ */
+.hero-eyebrow {
+  font-size:12px; font-weight:700; letter-spacing:2px; text-transform:uppercase;
+  color:var(--accent); margin-bottom:18px;
+  display:flex; align-items:center; gap:8px;
+}
+.hero-eyebrow::before { content:''; width:24px; height:2px; background:var(--accent); }
+.hero-title {
+  font-size:clamp(34px,4.5vw,60px); line-height:1.12; color:#fff;
+  margin-bottom:22px; font-weight:700;
+}
+[data-theme="premium"] .hero-title { font-style:italic; }
+.hero-sub { font-size:17px; line-height:1.75; color:rgba(255,255,255,.7); margin-bottom:36px; max-width:480px; }
+[data-theme="premium"] .hero-sub { color:var(--muted); }
+.hero-btns { display:flex; gap:14px; flex-wrap:wrap; }
+.btn-main {
+  background:var(--accent); color:#fff; padding:14px 30px; border-radius:5px;
+  font-size:15px; font-weight:700; text-decoration:none; transition:all .2s;
+  display:inline-flex; align-items:center; gap:7px;
+}
+[data-theme="premium"] .btn-main { color:#0e0c08; border-radius:2px; letter-spacing:1px; font-size:13px; text-transform:uppercase; }
+.btn-main:hover { opacity:.9; transform:translateY(-2px); }
+.btn-sec {
+  border:1.5px solid rgba(255,255,255,.3); color:rgba(255,255,255,.85);
+  padding:14px 30px; border-radius:5px; font-size:15px; font-weight:600;
+  text-decoration:none; transition:all .2s;
+}
+[data-theme="premium"] .btn-sec { border-color:var(--border); color:var(--muted); border-radius:2px; }
+.btn-sec:hover { border-color:rgba(255,255,255,.7); color:#fff; }
+
+/* Hero card */
+.hero-card {
+  background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.15);
+  border-radius:12px; padding:28px; backdrop-filter:blur(8px);
+}
+[data-theme="premium"] .hero-card { background:rgba(201,168,76,.06); border-color:rgba(201,168,76,.2); }
+.hero-card-title { font-size:12px; font-weight:700; color:var(--accent); letter-spacing:1.5px; text-transform:uppercase; margin-bottom:18px; }
+.hc-row { display:flex; align-items:center; gap:13px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+.hc-row:last-of-type { border-bottom:none; }
+[data-theme="premium"] .hc-row { border-color:rgba(201,168,76,.1); }
+.hc-icon { width:36px; height:36px; background:rgba(255,255,255,.1); border-radius:7px; display:flex; align-items:center; justify-content:center; font-size:16px; flex-shrink:0; }
+.hc-row h4 { font-size:13px; font-weight:600; color:#fff; margin-bottom:2px; }
+[data-theme="premium"] .hc-row h4 { color:var(--text); }
+.hc-row p { font-size:11px; color:rgba(255,255,255,.45); }
+.hc-phone {
+  margin-top:18px; background:var(--accent); border-radius:8px; padding:13px 16px;
+  display:flex; align-items:center; gap:10px; text-decoration:none; transition:opacity .2s;
+}
+.hc-phone:hover { opacity:.9; }
+.hc-phone-label { font-size:10px; font-weight:600; color:rgba(0,0,0,.5); }
+.hc-phone-num { font-size:16px; font-weight:700; color:#fff; }
+[data-theme="premium"] .hc-phone-num { color:#0e0c08; }
+
+/* Trust bar */
+.trust-bar {
+  background:var(--primary-dark); padding:20px 52px;
+  display:flex; justify-content:center; gap:60px; flex-wrap:wrap;
+  transition:background .35s;
+}
+[data-theme="premium"] .trust-bar { background:#0a0800; border-bottom:1px solid var(--border); }
+.trust-item { text-align:center; }
+.trust-num { font-size:24px; font-weight:700; color:var(--accent); line-height:1; }
+[data-theme="klassisch"] .trust-num { font-family:'Lora',serif; }
+[data-theme="premium"] .trust-num { font-family:'Playfair Display',serif; }
+.trust-label { font-size:11px; color:rgba(255,255,255,.5); margin-top:3px; }
+
+/* ════════════════════════════════════
+   CONTENT SECTIONS
+════════════════════════════════════ */
+.content-section { padding:84px 0; transition:background .35s; }
+.content-section.alt { background:var(--white); }
+[data-theme="premium"] .content-section.alt { background:#0a0800; }
+.container { max-width:1100px; margin:0 auto; padding:0 52px; }
+.sec-eyebrow { font-size:11px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--accent); display:flex; align-items:center; gap:8px; margin-bottom:12px; }
+.sec-eyebrow::before { content:''; width:18px; height:2px; background:var(--accent); }
+.sec-title { font-size:clamp(26px,3.5vw,40px); font-weight:700; line-height:1.2; color:var(--text); margin-bottom:14px; }
+[data-theme="premium"] .sec-title { color:var(--white); font-style:italic; }
+.sec-sub { font-size:16px; line-height:1.75; color:var(--muted); max-width:540px; }
+
+/* Services */
+.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px; }
+.s-card {
+  background:var(--card-bg); border:1px solid var(--border);
+  border-radius:10px; padding:32px 28px; overflow:hidden;
+  transition:box-shadow .25s,transform .25s,border-color .25s;
+}
+[data-theme="warm"] .s-card { border-radius:16px; }
+[data-theme="premium"] .s-card { border-radius:2px; }
+.s-card:hover { box-shadow:0 8px 32px rgba(0,0,0,.1); transform:translateY(-4px); border-color:var(--accent); }
+[data-theme="premium"] .s-card:hover { box-shadow:0 8px 40px rgba(201,168,76,.12); }
+.s-icon { font-size:28px; margin-bottom:18px; display:flex; width:52px; height:52px; background:color-mix(in srgb,var(--accent) 14%,transparent); border-radius:10px; align-items:center; justify-content:center; }
+[data-theme="premium"] .s-icon { border-radius:2px; border:1px solid var(--border); background:transparent; }
+.s-card h3 { font-size:18px; font-weight:700; color:var(--text); margin-bottom:10px; }
+[data-theme="premium"] .s-card h3 { color:var(--white); }
+.s-card p { font-size:14px; color:var(--muted); line-height:1.7; }
+.s-list { list-style:none; margin-top:14px; display:flex; flex-direction:column; gap:7px; }
+.s-list li { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:7px; }
+.s-list li::before { content:'✓'; color:var(--accent); font-weight:700; }
+
+/* Steps */
+.steps-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:24px; margin-top:48px; position:relative; }
+.steps-grid::before { content:''; position:absolute; top:34px; left:calc(12.5% + 16px); right:calc(12.5% + 16px); height:2px; background:var(--border); }
+[data-theme="premium"] .steps-grid::before { background:rgba(201,168,76,.2); }
+.step { text-align:center; position:relative; }
+.step-num { width:52px; height:52px; background:var(--primary); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:17px; font-weight:700; color:#fff; margin:0 auto 18px; position:relative; z-index:1; border:3px solid var(--bg); transition:background .35s; }
+[data-theme="premium"] .step-num { background:var(--accent); color:#0e0c08; border-radius:2px; border:none; }
+.step h4 { font-size:14px; font-weight:700; color:var(--text); margin-bottom:7px; }
+[data-theme="premium"] .step h4 { color:var(--white); }
+.step p { font-size:13px; color:var(--muted); line-height:1.6; }
+
+/* Pricing */
+.pricing-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; margin-top:48px; align-items:start; }
+.price-card { background:var(--card-bg); border:1.5px solid var(--border); border-radius:12px; padding:36px 30px; text-align:center; transition:all .25s; }
+[data-theme="premium"] .price-card { border-radius:2px; }
+.price-card.featured { background:var(--primary); border-color:var(--primary); transform:scale(1.04); }
+[data-theme="premium"] .price-card.featured { background:linear-gradient(135deg,#8B6914,#C9A84C); border-color:transparent; }
+.price-card:hover:not(.featured) { border-color:var(--accent); }
+.price-tag { font-size:10px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--accent); margin-bottom:8px; }
+.price-card.featured .price-tag { color:rgba(255,255,255,.8); }
+[data-theme="premium"] .price-card.featured .price-tag { color:rgba(0,0,0,.6); }
+.price-name { font-size:19px; font-weight:700; color:var(--text); margin-bottom:18px; }
+.price-card.featured .price-name { color:#fff; }
+[data-theme="premium"] .price-card.featured .price-name { color:#0e0c08; }
+.price-old { font-size:13px; color:var(--muted); text-decoration:line-through; display:block; margin-bottom:2px; }
+.savings-badge { display:inline-flex; align-items:center; gap:5px; background:color-mix(in srgb,var(--accent) 12%,transparent); border:1px solid color-mix(in srgb,var(--accent) 30%,transparent); color:var(--accent); font-size:10px; font-weight:700; padding:3px 10px; border-radius:12px; margin-bottom:8px; }
+.price-amount { font-size:42px; font-weight:800; color:var(--text); line-height:1; }
+[data-theme="klassisch"] .price-amount,[data-theme="premium"] .price-amount { font-family:'Lora',serif; }
+.price-card.featured .price-amount { color:#fff; }
+[data-theme="premium"] .price-card.featured .price-amount { color:#0e0c08; }
+.price-amount span { font-size:18px; font-weight:400; }
+.price-sub { font-size:12px; color:var(--muted); margin:7px 0 22px; }
+.price-card.featured .price-sub { color:rgba(255,255,255,.65); }
+[data-theme="premium"] .price-card.featured .price-sub { color:rgba(0,0,0,.55); }
+.price-list { list-style:none; text-align:left; display:flex; flex-direction:column; gap:9px; margin-bottom:26px; }
+.price-list li { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:7px; }
+.price-card.featured .price-list li { color:rgba(255,255,255,.8); }
+[data-theme="premium"] .price-card.featured .price-list li { color:rgba(0,0,0,.7); }
+.price-list li::before { content:'✓'; color:var(--accent); font-weight:700; flex-shrink:0; }
+.price-card.featured .price-list li::before { color:#fff; }
+[data-theme="premium"] .price-card.featured .price-list li::before { color:#0e0c08; }
+.price-btn { display:block; padding:13px; border-radius:6px; font-size:14px; font-weight:700; text-decoration:none; text-align:center; transition:all .2s; background:var(--accent); color:#fff; }
+[data-theme="premium"] .price-btn { border-radius:2px; letter-spacing:1px; font-size:12px; text-transform:uppercase; }
+.price-card.featured .price-btn { background:rgba(255,255,255,.2); color:#fff; border:1.5px solid rgba(255,255,255,.4); }
+[data-theme="premium"] .price-card.featured .price-btn { background:#0e0c08; color:var(--accent); border:none; }
+.price-btn:hover { opacity:.88; transform:translateY(-1px); }
+
+/* Pricing Toggle */
+.price-toggle-wrap { display:flex; justify-content:center; margin-bottom:40px; }
+.price-toggle { display:flex; background:var(--border); border-radius:8px; padding:4px; gap:4px; border:1.5px solid var(--border); }
+.ptab { flex:1; padding:10px 20px; border-radius:6px; border:none; background:none; font-size:13px; font-weight:600; cursor:pointer; color:var(--muted); transition:all .2s; white-space:nowrap; font-family:inherit; }
+.ptab.active { background:var(--white); color:var(--primary); box-shadow:0 2px 8px rgba(0,0,0,.1); }
+[data-theme="premium"] .ptab.active { background:var(--card-bg); color:var(--accent); }
+.price-tab-content { display:none; }
+.price-tab-content.active { display:block; }
+
+/* Loyalty */
+.loyalty-section { margin-top:48px; background:var(--card-bg); border:1.5px solid var(--border); border-radius:12px; padding:32px; position:relative; overflow:hidden; }
+[data-theme="premium"] .loyalty-section { border-radius:2px; }
+.loyalty-section::before { content:'★'; position:absolute; right:24px; top:10px; font-size:80px; color:var(--accent); opacity:.06; line-height:1; }
+.loyalty-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:18px; }
+.loyalty-item { background:var(--bg); border:1px solid var(--border); border-radius:8px; padding:18px; text-align:center; transition:border-color .2s,transform .2s; }
+[data-theme="premium"] .loyalty-item { border-radius:2px; }
+.loyalty-item:hover { border-color:var(--accent); transform:translateY(-3px); }
+.loyalty-price { font-size:28px; font-weight:800; color:var(--primary); line-height:1; margin-bottom:4px; }
+[data-theme="premium"] .loyalty-price { color:var(--accent); }
+.loyalty-price span { font-size:14px; font-weight:400; }
+.loyalty-was { font-size:11px; color:var(--muted); text-decoration:line-through; margin-bottom:6px; }
+.loyalty-name { font-size:13px; font-weight:700; color:var(--text); margin-bottom:3px; }
+[data-theme="premium"] .loyalty-name { color:var(--white); }
+.loyalty-desc { font-size:11px; color:var(--muted); }
+
+/* Testi offer box */
+.testi-offer-box { margin-top:22px; padding:18px 22px; background:color-mix(in srgb,var(--accent) 8%,transparent); border:1.5px solid color-mix(in srgb,var(--accent) 25%,transparent); border-radius:8px; display:flex; align-items:flex-start; gap:14px; }
+.tob-icon { font-size:26px; flex-shrink:0; line-height:1; margin-top:2px; }
+.tob-title { font-size:14px; font-weight:700; color:var(--text); margin-bottom:5px; }
+[data-theme="premium"] .tob-title { color:var(--white); }
+.tob-text { font-size:13px; color:var(--muted); line-height:1.6; }
+.tob-what { margin-top:9px; display:flex; gap:10px; flex-wrap:wrap; }
+.tob-chip { background:var(--white); border:1px solid var(--border); font-size:11px; color:var(--text); padding:3px 9px; border-radius:20px; display:flex; align-items:center; gap:4px; }
+.tob-chip::before { content:'✓'; color:var(--accent); font-weight:700; }
+
+/* Testimonials */
+.testi-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:48px; }
+.testi-card { background:var(--card-bg); border:1px solid var(--border); border-radius:10px; padding:28px; transition:all .2s; }
+[data-theme="premium"] .testi-card { border-radius:2px; }
+.testi-card:hover { transform:translateY(-3px); box-shadow:0 8px 24px rgba(0,0,0,.08); }
+.testi-stars { color:#f4b942; font-size:13px; margin-bottom:11px; letter-spacing:2px; }
+.testi-text { font-size:14px; color:var(--muted); line-height:1.7; margin-bottom:18px; font-style:italic; }
+.testi-author { display:flex; align-items:center; gap:11px; }
+.testi-av { width:38px; height:38px; border-radius:50%; background:var(--primary); color:var(--accent); display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+
+/* With images: testi avatars use real photos */
+[data-layout="bilder"] .testi-av {
+  background:url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80') center/cover;
+  color:transparent;
+}
+[data-layout="bilder"] .testi-av.av2 { background-image:url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80'); }
+[data-layout="bilder"] .testi-av.av3 { background-image:url('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=80&q=80'); }
+
+.testi-name { font-size:13px; font-weight:700; color:var(--text); }
+[data-theme="premium"] .testi-name { color:var(--white); }
+.testi-role { font-size:11px; color:var(--muted); margin-top:2px; }
+
+/* CTA Banner */
+.cta-banner { background:var(--primary); padding:72px 52px; position:relative; overflow:hidden; transition:background .35s; }
+[data-theme="premium"] .cta-banner { background:linear-gradient(135deg,#0a0800,#18140a); border-top:1px solid var(--border); }
+.cta-banner::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at 50% 0%,rgba(255,255,255,.05) 0%,transparent 60%); }
+.cta-inner-grid { position:relative; z-index:2; max-width:900px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+.cta-title { font-size:clamp(24px,3.5vw,40px); font-weight:700; color:#fff; margin-bottom:14px; }
+[data-theme="premium"] .cta-title { color:var(--accent); font-style:italic; }
+.cta-sub { font-size:15px; color:rgba(255,255,255,.65); line-height:1.7; margin-bottom:28px; }
+[data-theme="premium"] .cta-sub { color:var(--muted); }
+.cta-checks { display:flex; flex-direction:column; gap:12px; }
+.cta-check { display:flex; align-items:center; gap:10px; color:rgba(255,255,255,.75); font-size:14px; }
+.cta-check span { color:var(--accent); font-size:17px; }
+.cta-phone-box { margin-top:24px; padding:14px 18px; background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:8px; }
+.cta-phone-label { font-size:10px; color:rgba(255,255,255,.4); text-transform:uppercase; letter-spacing:1.5px; margin-bottom:5px; }
+.cta-phone-num { font-size:19px; font-weight:700; color:#fff; text-decoration:none; }
+[data-theme="premium"] .cta-phone-num { color:var(--accent); }
+
+/* Contact form */
+.contact-form-wrap { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.13); border-radius:12px; padding:28px; }
+.form-label-inner { display:block; font-size:10px; font-weight:700; color:rgba(255,255,255,.45); letter-spacing:1px; text-transform:uppercase; margin-bottom:5px; }
+.form-input-dark { width:100%; background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15); border-radius:6px; padding:10px 13px; color:#fff; font-size:13px; font-family:inherit; outline:none; transition:border-color .2s; margin-bottom:12px; }
+.form-input-dark:focus { border-color:var(--accent); }
+.form-input-dark::placeholder { color:rgba(255,255,255,.25); }
+.form-submit-btn { width:100%; background:var(--accent); color:#fff; border:none; border-radius:6px; padding:13px; font-size:14px; font-weight:700; cursor:pointer; font-family:inherit; transition:opacity .2s; }
+[data-theme="premium"] .form-submit-btn { color:#0e0c08; }
+.form-submit-btn:hover { opacity:.9; }
+#form-success { display:none; text-align:center; padding:20px 0; }
+
+/* Footer */
+footer { background:var(--primary-dark); padding:42px 52px 26px; transition:background .35s; }
+[data-theme="premium"] footer { background:#050400; }
+.footer-top { display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap; margin-bottom:30px; }
+.footer-logo-text { font-size:17px; font-weight:700; color:#fff; margin-bottom:9px; }
+[data-theme="klassisch"] .footer-logo-text { font-family:'Lora',serif; }
+[data-theme="premium"] .footer-logo-text { font-family:'Playfair Display',serif; color:var(--accent); }
+.footer-logo-text em { color:var(--accent); font-style:normal; }
+.footer-tagline { font-size:12px; color:rgba(255,255,255,.4); max-width:240px; line-height:1.6; }
+.footer-col h5 { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:13px; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:8px; }
+.footer-col a { font-size:13px; color:rgba(255,255,255,.5); text-decoration:none; transition:color .2s; }
+.footer-col a:hover { color:#fff; }
+.footer-bottom { border-top:1px solid rgba(255,255,255,.07); padding-top:18px; display:flex; justify-content:space-between; font-size:11px; color:rgba(255,255,255,.3); flex-wrap:wrap; gap:8px; }
+
+/* Responsive */
+@media (max-width:1024px) {
+  [data-layout="bilder"] .hero-inner,
+  [data-layout="clean"] .hero-inner,
+  [data-layout="hybrid"] .hero-inner { grid-template-columns:1fr; }
+  [data-layout="bilder"] .hero-inner > .hero-card,
+  [data-layout="clean"] .hero-inner > .hero-card,
+  [data-layout="hybrid"] .hero-inner > .hero-card { display:none; }
+  .services-grid,.steps-grid,.pricing-grid,.testi-grid { grid-template-columns:1fr 1fr; }
+  .steps-grid::before { display:none; }
+  .price-card.featured { transform:none; }
+  .loyalty-grid { grid-template-columns:1fr 1fr; }
+  .cta-inner-grid { grid-template-columns:1fr; gap:36px; }
+}
+@media (max-width:680px) {
+  .nav { padding:0 20px; } .nav-links { display:none; }
+  .container { padding:0 20px; }
+  [data-layout="bilder"] .hero-inner,
+  [data-layout="clean"] .hero { padding:60px 20px 70px; }
+  [data-layout="hybrid"] .hero-inner { padding:60px 20px; }
+  .trust-bar { padding:18px 20px; gap:20px; }
+  .services-grid,.pricing-grid,.testi-grid { grid-template-columns:1fr; }
+  .loyalty-grid { grid-template-columns:1fr; }
+  footer { padding:36px 20px 22px; }
+  .cta-banner { padding:52px 20px; }
+}
+
+/* Scroll reveal */
+.rev { opacity:0; transform:translateY(24px); transition:opacity .65s,transform .65s; }
+.rev.in { opacity:1; transform:none; }
+
+/* ════════════════════════════════════
+   VISUAL EDITOR STYLES
+════════════════════════════════════ */
+body.edit-mode [data-edit] {
+  outline:2px dashed rgba(59,130,246,.5) !important;
+  outline-offset:3px; border-radius:3px; cursor:text !important;
+  transition:outline-color .15s, background .15s;
+}
+body.edit-mode [data-edit]:hover {
+  outline-color:#3b82f6 !important;
+  background:rgba(59,130,246,.06) !important;
+}
+body.edit-mode [data-edit].editing {
+  outline:2px solid #f59e0b !important;
+  background:rgba(245,158,11,.07) !important;
+}
+.edit-toolbar {
+  position:fixed; top:0; left:0; right:0; z-index:99998;
+  background:linear-gradient(135deg,#1e3a5f,#2563eb);
+  color:#fff; padding:10px 24px;
+  display:flex; align-items:center; gap:14px; flex-wrap:wrap;
+  box-shadow:0 4px 20px rgba(0,0,0,.3);
+  font-family:sans-serif; font-size:13px;
+}
+.edit-toolbar strong { font-size:14px; }
+.edit-toolbar .hint { color:rgba(255,255,255,.6); font-size:12px; }
+.edit-toolbar-btns { margin-left:auto; display:flex; gap:8px; }
+.et-btn {
+  padding:7px 16px; border-radius:5px; border:none;
+  font-size:12px; font-weight:700; cursor:pointer; font-family:sans-serif;
+}
+.et-btn-save { background:#f59e0b; color:#000; }
+.et-btn-save:hover { background:#d97706; }
+.et-btn-exit { background:rgba(255,255,255,.15); color:#fff; border:1px solid rgba(255,255,255,.3); }
+.et-btn-exit:hover { background:rgba(255,255,255,.25); }
+
+.field-popup {
+  position:fixed; z-index:99999;
+  background:#1e293b; border:1.5px solid #3b82f6;
+  border-radius:10px; padding:14px; width:300px;
+  box-shadow:0 12px 40px rgba(0,0,0,.4);
+  font-family:sans-serif;
+}
+.field-popup-label { font-size:10px; font-weight:700; color:#60a5fa; letter-spacing:1px; text-transform:uppercase; margin-bottom:8px; }
+.field-popup input,.field-popup textarea {
+  width:100%; background:#0f172a; border:1.5px solid #334155;
+  border-radius:6px; padding:9px 11px; color:#e2e8f0;
+  font-size:13px; font-family:inherit; outline:none; transition:border-color .15s; box-sizing:border-box;
+}
+.field-popup input:focus,.field-popup textarea:focus { border-color:#3b82f6; }
+.field-popup textarea { resize:vertical; min-height:70px; }
+.field-popup-btns { display:flex; gap:8px; margin-top:10px; }
+.fp-ok { flex:1; background:#3b82f6; color:#fff; border:none; border-radius:5px; padding:8px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; }
+.fp-ok:hover { background:#2563eb; }
+.fp-cancel { background:#1e293b; color:#94a3b8; border:1px solid #334155; border-radius:5px; padding:8px 12px; font-size:12px; cursor:pointer; font-family:inherit; }
+.edit-toast { position:fixed; bottom:70px; left:50%; transform:translateX(-50%); background:#1e293b; color:#e2e8f0; padding:9px 20px; border-radius:20px; font-size:12px; font-family:sans-serif; font-weight:600; z-index:99999; box-shadow:0 4px 16px rgba(0,0,0,.3); pointer-events:none; animation:etfade .25s ease; }
+@keyframes etfade { from{opacity:0;transform:translateX(-50%) translateY(8px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+</style>
+
+</head>
+<body data-theme="klassisch" data-layout="clean">
+
+<!-- ════ DESIGN BAR ════ -->
+
+<div id="design-bar">
+  <span class="bar-label">Stil:</span>
+  <div class="bar-section">
+    <button class="style-btn active" data-style="klassisch" onclick="setStyle(this)">1 · Klassisch</button>
+    <button class="style-btn" data-style="warm" onclick="setStyle(this)">2 · Warm</button>
+    <button class="style-btn" data-style="professionell" onclick="setStyle(this)">3 · Professionell</button>
+    <button class="style-btn" data-style="frisch" onclick="setStyle(this)">4 · Frisch</button>
+    <button class="style-btn" data-style="premium" onclick="setStyle(this)">5 · Individuell ★</button>
+  </div>
+  <div class="bar-divider"></div>
+  <span class="bar-label">Layout:</span>
+  <div class="bar-section">
+    <button class="layout-btn active" data-layout="clean" onclick="setLayout(this)">📝 Ohne Bilder</button>
+    <button class="layout-btn" data-layout="hybrid" onclick="setLayout(this)">🖼 Hybrid</button>
+    <button class="layout-btn" data-layout="bilder" onclick="setLayout(this)">🌄 Mit Bildern</button>
+  </div>
+  <span class="upgrade-tag">★ Individuell ab 995 €</span>
+</div>
+
+<!-- ════ NAV ════ -->
+
+<nav class="nav">
+  <a href="#" class="nav-logo" id="nav-logo-el">Neu<em>ErLook</em></a>
+  <ul class="nav-links">
+    <li><a href="#leistungen">Leistungen</a></li>
+    <li><a href="#ablauf">Ablauf</a></li>
+    <li><a href="#preise">Preise</a></li>
+    <li><a href="#referenzen">Referenzen</a></li>
+  </ul>
+  <a href="#kontakt" class="nav-cta">Kostenlose Vorschau</a>
+</nav>
+
+<!-- ════ HERO ════ -->
+
+<div class="hero">
+  <div class="hero-img"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow" data-edit="eyebrow">Für lokale Betriebe in Deutschland</div>
+      <h1 class="hero-title">
+        <span data-edit="hero-line1">Ihre Website.</span><br>
+        <span data-edit="hero-line2">Modern. Fertig.</span><br>
+        <span data-edit="hero-line3">Bezahlbar.</span>
+      </h1>
+      <p class="hero-sub" data-edit="hero-sub">Wir modernisieren veraltete Websites für Handwerker, Ärzte, Restaurants und lokale Dienstleister – schnell, unkompliziert und ohne Technik-Stress für Sie.</p>
+      <div class="hero-btns">
+        <a href="#kontakt" class="btn-main">Kostenlose Vorschau anfordern →</a>
+        <a href="#preise" class="btn-sec">Preise ansehen</a>
+      </div>
+    </div>
+    <div class="hero-card">
+      <div class="hero-card-title">Was wir liefern</div>
+      <div class="hc-row"><div class="hc-icon">🖥️</div><div><h4>Startseite komplett neu</h4><p>Professionell, modern, überzeugend</p></div></div>
+      <div class="hc-row"><div class="hc-icon">📱</div><div><h4>Mobil optimiert</h4><p>Sieht auf jedem Gerät perfekt aus</p></div></div>
+      <div class="hc-row"><div class="hc-icon">⚡</div><div><h4>Schnelle Ladezeit</h4><p>Kein Baukasten – reiner, sauberer Code</p></div></div>
+      <div class="hc-row"><div class="hc-icon">🔧</div><div><h4>Fertige HTML-Datei</h4><p>Einfach hochladen – fertig</p></div></div>
+      <a href="tel:+49XXXXXXXXXX" class="hc-phone" id="hc-phone-link">
+        <span style="font-size:20px">📞</span>
+        <div>
+          <div class="hc-phone-label">Jetzt kostenlos beraten lassen</div>
+          <div class="hc-phone-num" data-edit="phone">+49 XXX – XXX XX XX</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Trust Bar -->
+
+<div class="trust-bar">
+  <div class="trust-item"><div class="trust-num">48h</div><div class="trust-label">Erste Vorschau in</div></div>
+  <div class="trust-item"><div class="trust-num">100+</div><div class="trust-label">Modernisierungen</div></div>
+  <div class="trust-item"><div class="trust-num">ab 995€</div><div class="trust-label">mit Testimonial-Rabatt</div></div>
+  <div class="trust-item"><div class="trust-num">kostenlos</div><div class="trust-label">Erste Vorschau</div></div>
+</div>
+
+<!-- ════ LEISTUNGEN ════ -->
+
+<section class="content-section alt" id="leistungen">
+  <div class="container">
+    <div class="rev">
+      <div class="sec-eyebrow">Leistungen</div>
+      <h2 class="sec-title" data-edit="leistungen-title">Was wir für Sie tun</h2>
+      <p class="sec-sub" data-edit="leistungen-sub">Kein Technik-Kauderwelsch, keine Monatspauschalen. Sie bekommen eine fertige Website – Punkt.</p>
+    </div>
+    <div class="services-grid rev">
+      <div class="s-card">
+        <div class="s-card-img"><img src="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=600&q=80" alt="Startseite" loading="lazy"></div>
+        <div class="s-icon">🖥️</div>
+        <h3 data-edit="s1-title">Startseite</h3>
+        <p data-edit="s1-text">Die wichtigste Seite Ihrer Website – komplett neu gestaltet, überzeugend und professionell.</p>
+        <ul class="s-list"><li>5 Designstile zur Auswahl</li><li>Individuelles Design auf Wunsch</li><li>Alle Ihre Infos & Texte</li><li>Kontaktformular inklusive</li></ul>
+      </div>
+      <div class="s-card">
+        <div class="s-card-img"><img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80" alt="Unterseiten" loading="lazy"></div>
+        <div class="s-icon">📄</div>
+        <h3 data-edit="s2-title">Unterseiten</h3>
+        <p data-edit="s2-text">Leistungsseiten, Über-uns, Galerie – jede Seite im gleichen Stil wie die Startseite.</p>
+        <ul class="s-list"><li>Konsistentes Design</li><li>Passend zu Ihrem Betrieb</li><li>Texte von Ihnen oder von uns</li></ul>
+      </div>
+      <div class="s-card">
+        <div class="s-card-img"><img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=600&q=80" alt="Go-Live" loading="lazy"></div>
+        <div class="s-icon">🚀</div>
+        <h3 data-edit="s3-title">Aufsetzen & Go-Live</h3>
+        <p data-edit="s3-text">Wir liefern fertige HTML-Dateien oder helfen beim Hochladen – Sie müssen nichts wissen.</p>
+        <ul class="s-list"><li>Fertige Dateien zum Hochladen</li><li>Keine monatlichen Kosten</li><li>Einmalige Zahlung, Ihre Datei</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ ABLAUF ════ -->
+
+<section class="content-section" id="ablauf">
+  <div class="container">
+    <div class="rev">
+      <div class="sec-eyebrow">Ablauf</div>
+      <h2 class="sec-title">So einfach funktioniert es</h2>
+      <p class="sec-sub">Von der ersten Anfrage bis zur fertigen Website – unkompliziert und ohne Stress.</p>
+    </div>
+    <div class="steps-grid rev">
+      <div class="step"><div class="step-num">1</div><h4>Kostenlose Vorschau</h4><p>Wir erstellen eine erste Vorschau Ihrer neuen Website – kostenlos und unverbindlich.</p></div>
+      <div class="step"><div class="step-num">2</div><h4>Stil auswählen</h4><p>Sie wählen aus 5 Designs oder entscheiden sich für Ihr individuelles Design.</p></div>
+      <div class="step"><div class="step-num">3</div><h4>Feinschliff</h4><p>Texte, Bilder, Farben – wir stimmen alles auf Ihren Betrieb ab.</p></div>
+      <div class="step"><div class="step-num">4</div><h4>Fertig & Online</h4><p>Sie erhalten die fertigen Dateien und Ihre neue Website ist live.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ PREISE ════ -->
+
+<section class="content-section alt" id="preise">
+  <div class="container">
+    <div class="rev">
+      <div class="sec-eyebrow">Preise</div>
+      <h2 class="sec-title">Klare Festpreise, keine Überraschungen</h2>
+      <p class="sec-sub">Keine Monatspauschalen. Sie zahlen einmal, die Website gehört Ihnen.</p>
+    </div>
+    <div class="price-toggle-wrap rev">
+      <div class="price-toggle">
+        <button class="ptab" onclick="switchPricing('standard',this)">Normalpreis</button>
+        <button class="ptab active" onclick="switchPricing('rabatt',this)">Mit Testimonial-Rabatt 🏷️ −33%</button>
+      </div>
+    </div>
+
+```
+<!-- Normal -->
+<div class="price-tab-content" id="pt-standard">
+  <div class="pricing-grid rev">
+    <div class="price-card"><div class="price-tag">Einstieg</div><div class="price-name">Startseite</div><div class="price-amount">1.490<span>€</span></div><div class="price-sub">Einmalige Zahlung, zzgl. MwSt.</div><ul class="price-list"><li>Neue professionelle Startseite</li><li>5 Stile + 3 Layouts zur Auswahl</li><li>Mobil & Desktop optimiert</li><li>Kontaktformular</li><li>Fertige HTML-Datei</li></ul><a href="#kontakt" class="price-btn">Vorschau anfordern</a></div>
+    <div class="price-card featured"><div class="price-tag">Empfohlen</div><div class="price-name">Komplett-Website</div><div class="price-amount">2.106<span>€</span></div><div class="price-sub">Startseite + 4 Unterseiten</div><ul class="price-list"><li>Startseite + 4 Unterseiten à 229 €</li><li>Alle Seiten einheitlich</li><li>Impressum & Datenschutz</li><li>Google Maps Einbindung</li><li>Fertige HTML-Dateien</li></ul><a href="#kontakt" class="price-btn">Jetzt anfragen</a></div>
+    <div class="price-card"><div class="price-tag">Premium</div><div class="price-name">Individuell ★</div><div class="price-amount">2.980<span>€</span></div><div class="price-sub">Startseite + Wunsch-Design</div><ul class="price-list"><li>Einzigartiges Wunsch-Design</li><li>Kein Standard-Stil</li><li>Alle Unterseiten buchbar</li><li>Prioritäts-Support</li></ul><a href="#kontakt" class="price-btn">Individuell anfragen</a></div>
+  </div>
+  <p style="text-align:center;margin-top:18px;font-size:13px;color:var(--muted)">Unterseiten einzeln: je 229 € · Preise zzgl. MwSt.</p>
+</div>
+
+<!-- Rabatt -->
+<div class="price-tab-content active" id="pt-rabatt">
+  <div class="pricing-grid rev">
+    <div class="price-card"><div class="savings-badge">🏷️ Sie sparen 495 €</div><div class="price-tag">Einstieg</div><div class="price-name">Startseite</div><span class="price-old">Normalpreis 1.490 €</span><div class="price-amount">995<span>€</span></div><div class="price-sub">Einmalige Zahlung, zzgl. MwSt.</div><ul class="price-list"><li>Neue professionelle Startseite</li><li>5 Stile + 3 Layouts</li><li>Mobil & Desktop optimiert</li><li>Kontaktformular</li><li>Fertige HTML-Datei</li></ul><a href="#kontakt" class="price-btn">Vorschau anfordern</a></div>
+    <div class="price-card featured"><div class="savings-badge" style="background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.3);color:#fff;">🏷️ Sie sparen 702 €</div><div class="price-tag">Empfohlen</div><div class="price-name">Komplett-Website</div><span class="price-old" style="color:rgba(255,255,255,.45)">Normalpreis 2.106 €</span><div class="price-amount">1.404<span>€</span></div><div class="price-sub">Startseite + 4 Unterseiten</div><ul class="price-list"><li>Startseite + 4 Unterseiten à 149 €</li><li>Alle Seiten einheitlich</li><li>Impressum & Datenschutz</li><li>Google Maps Einbindung</li></ul><a href="#kontakt" class="price-btn">Jetzt anfragen</a></div>
+    <div class="price-card"><div class="savings-badge">🏷️ Sie sparen 990 €</div><div class="price-tag">Premium</div><div class="price-name">Individuell ★</div><span class="price-old">Normalpreis 2.980 €</span><div class="price-amount">1.990<span>€</span></div><div class="price-sub">Startseite + Wunsch-Design</div><ul class="price-list"><li>Einzigartiges Wunsch-Design</li><li>Kein Standard-Stil</li><li>Alle Unterseiten buchbar</li><li>Prioritäts-Support</li></ul><a href="#kontakt" class="price-btn">Individuell anfragen</a></div>
+  </div>
+  <p style="text-align:center;margin-top:18px;font-size:13px;color:var(--muted)">Unterseiten einzeln: je 149 € · Preise zzgl. MwSt.</p>
+  <div class="testi-offer-box rev">
+    <div class="tob-icon">📸</div>
+    <div>
+      <div class="tob-title">Was bedeutet der Testimonial-Rabatt?</div>
+      <div class="tob-text">Sie erhalten 33% Rabatt – dafür erscheinen Sie als Referenz auf unserer Website. Das brauchen wir:</div>
+      <div class="tob-what"><span class="tob-chip">Kurzes Zitat</span><span class="tob-chip">Vorher-Nachher</span><span class="tob-chip">Ihr Name & Betrieb</span><span class="tob-chip">Optional: Foto</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- Bestandskunden -->
+<div class="loyalty-section rev">
+  <div class="sec-eyebrow" style="margin-bottom:6px">Bestandskunden</div>
+  <h3 style="font-size:20px;font-weight:700;color:var(--text);margin-bottom:7px">Sie sind bereits Kunde? 50% Treue-Rabatt.</h3>
+  <p style="font-size:14px;color:var(--muted);max-width:500px">Als bestehender Kunde erhalten Sie auf alle weiteren Leistungen automatisch 50% Rabatt.</p>
+  <div class="loyalty-grid">
+    <div class="loyalty-item"><div class="loyalty-price">75<span>€</span></div><div class="loyalty-was">statt 149 €</div><div class="loyalty-name">Neue Unterseite</div><div class="loyalty-desc">Zusätzliche Seite im bestehenden Design</div></div>
+    <div class="loyalty-item"><div class="loyalty-price">495<span>€</span></div><div class="loyalty-was">statt 995 €</div><div class="loyalty-name">Neues Design</div><div class="loyalty-desc">Komplettes Redesign in anderem Stil</div></div>
+    <div class="loyalty-item"><div class="loyalty-price">745<span>€</span></div><div class="loyalty-was">statt 1.490 €</div><div class="loyalty-name">Weitere Startseite</div><div class="loyalty-desc">Für ein zweites Projekt</div></div>
+  </div>
+</div>
+```
+
+  </div>
+</section>
+
+<!-- ════ REFERENZEN / TESTIMONIALS ════ -->
+
+<section class="content-section" id="referenzen">
+  <div class="container">
+    <div class="rev">
+      <div class="sec-eyebrow">Referenzen</div>
+      <h2 class="sec-title">Was unsere Kunden sagen</h2>
+    </div>
+    <div class="testi-grid rev">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Ich hatte keine Ahnung von Websites. Die haben einfach alles erledigt. Meine neue Website sieht aus wie von einem großen Unternehmen."</p>
+        <div class="testi-author"><div class="testi-av">KH</div><div><div class="testi-name">Klaus Hoffmann</div><div class="testi-role">Elektriker, Dortmund</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Innerhalb von 2 Tagen hatte ich eine Vorschau die ich kaum glauben konnte. Preis-Leistung ist unschlagbar."</p>
+        <div class="testi-author"><div class="testi-av av2">MR</div><div><div class="testi-name">Maria Rossi</div><div class="testi-role">Inhaberin, Pizzeria Bella Italia</div></div></div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">„Jetzt rufen Patienten an weil sie meine Website gefunden haben. Vorher war die Seite peinlich. Jetzt bin ich stolz drauf."</p>
+        <div class="testi-author"><div class="testi-av av3">BM</div><div><div class="testi-name">Dr. Brigitte Meier</div><div class="testi-role">Allgemeinmedizinerin, Hamburg</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════ CTA + KONTAKTFORMULAR ════ -->
+
+<div class="cta-banner" id="kontakt">
+  <div class="cta-inner-grid">
+    <div>
+      <h2 class="cta-title" data-edit="cta-title">Wie würde Ihre Website aussehen?</h2>
+      <p class="cta-sub" data-edit="cta-sub">Wir erstellen eine kostenlose Vorschau Ihrer neuen Website – in 48 Stunden, unverbindlich und ohne Risiko.</p>
+      <div class="cta-checks">
+        <div class="cta-check"><span>✓</span> Kostenlose Vorschau in 48h</div>
+        <div class="cta-check"><span>✓</span> Kein Risiko, keine Vorauszahlung</div>
+        <div class="cta-check"><span>✓</span> 33% Rabatt bei Testimonial</div>
+      </div>
+      <div class="cta-phone-box">
+        <div class="cta-phone-label">Oder direkt anrufen</div>
+        <a href="tel:+49XXXXXXXXX" class="cta-phone-num" data-edit="cta-phone">+49 XXX – XXX XX XX</a>
+      </div>
+    </div>
+    <div class="contact-form-wrap">
+      <div style="font-size:12px;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:18px">Kostenlose Vorschau anfordern</div>
+      <form id="contact-form" action="mail.php" method="POST" novalidate>
+        <label class="form-label-inner">Ihr Name</label>
+        <input class="form-input-dark" type="text" name="name" required placeholder="Max Mustermann">
+        <label class="form-label-inner">Ihre alte Website-URL</label>
+        <input class="form-input-dark" type="url" name="website_alt" placeholder="https://meine-alte-website.de">
+        <label class="form-label-inner">E-Mail oder Telefon</label>
+        <input class="form-input-dark" type="text" name="kontakt" required placeholder="max@beispiel.de oder 0251 …">
+        <label class="form-label-inner">Preismodell</label>
+        <select class="form-input-dark" name="preismodell" style="margin-bottom:18px;cursor:pointer">
+          <option value="rabatt">Mit Testimonial-Rabatt (995 €)</option>
+          <option value="standard">Normalpreis (1.490 €)</option>
+          <option value="premium">Individuell (ab 995 €)</option>
+        </select>
+        <input type="text" name="website_url" style="display:none" tabindex="-1" autocomplete="off">
+        <button type="submit" id="form-submit-btn" class="form-submit-btn">Kostenlose Vorschau anfordern →</button>
+      </form>
+      <div id="form-success">
+        <div style="font-size:36px;margin-bottom:10px">✅</div>
+        <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:7px">Anfrage erhalten!</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6)">Wir melden uns in 48 Stunden mit Ihrer kostenlosen Vorschau.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ════ FOOTER ════ -->
+
+<footer>
+  <div class="footer-top">
+    <div><div class="footer-logo-text">Neu<em>ErLook</em></div><div class="footer-tagline">Moderne Websites für lokale Betriebe – unkompliziert, bezahlbar, überzeugend.</div></div>
+    <div class="footer-col"><h5>Leistungen</h5><ul><li><a href="#">Startseite modernisieren</a></li><li><a href="#">Unterseiten</a></li><li><a href="#">Individuelles Design</a></li><li><a href="#">Aufsetzen & Go-Live</a></li></ul></div>
+    <div class="footer-col"><h5>Unternehmen</h5><ul><li><a href="#">Über uns</a></li><li><a href="#">Referenzen</a></li><li><a href="#">Preise</a></li><li><a href="#">Kontakt</a></li></ul></div>
+    <div class="footer-col"><h5>Rechtliches</h5><ul><li><a href="#">Impressum</a></li><li><a href="#">Datenschutz</a></li><li><a href="#">AGB</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span id="footer-copy">© 2026 NeuErLook – Moderne Websites für lokale Betriebe</span>
+    <span>Made in Germany</span>
+  </div>
+</footer>
+
+<script>
+// ════════════════════════════════════
+//  STYLE & LAYOUT SWITCHER
+// ════════════════════════════════════
+function setStyle(btn) {
+  document.querySelectorAll('.style-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.body.setAttribute('data-theme', btn.dataset.style);
+  loadContent();
+}
+function setLayout(btn) {
+  document.querySelectorAll('.layout-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.body.setAttribute('data-layout', btn.dataset.layout);
+}
+
+// ════════════════════════════════════
+//  PRICING TOGGLE
+// ════════════════════════════════════
+function switchPricing(tab, btn) {
+  document.querySelectorAll('.ptab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.price-tab-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('pt-' + tab).classList.add('active');
+}
+
+// ════════════════════════════════════
+//  SCROLL REVEAL
+// ════════════════════════════════════
+const revObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) { setTimeout(() => e.target.classList.add('in'), i * 90); revObs.unobserve(e.target); }
+  });
+}, { threshold: 0.08 });
+document.querySelectorAll('.rev').forEach(el => revObs.observe(el));
+
+// ════════════════════════════════════
+//  CONTACT FORM → mail.php
+// ════════════════════════════════════
+const form = document.getElementById('contact-form');
+const submitBtn = document.getElementById('form-submit-btn');
+const successMsg = document.getElementById('form-success');
+if (form) {
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const orig = submitBtn.textContent;
+    submitBtn.textContent = 'Wird gesendet …';
+    submitBtn.disabled = true; submitBtn.style.opacity = '.7';
+    try {
+      const res = await fetch('mail.php', { method:'POST', body:new FormData(form) });
+      const data = await res.json();
+      if (data.ok) { form.style.display='none'; successMsg.style.display='block'; }
+      else { submitBtn.textContent = data.error || 'Fehler – bitte anrufen'; submitBtn.disabled=false; submitBtn.style.opacity='1'; }
+    } catch { submitBtn.textContent='Fehler – bitte direkt anrufen'; submitBtn.disabled=false; submitBtn.style.opacity='1'; }
+  });
+}
+
+// ════════════════════════════════════
+//  LOAD CONTENT FROM inhalte.json
+// ════════════════════════════════════
+async function loadContent() {
+  try {
+    const res = await fetch('inhalte.json?v=' + Date.now());
+    if (!res.ok) return;
+    const data = await res.json();
+    Object.entries(data).forEach(([key, val]) => {
+      document.querySelectorAll(`[data-edit="${key}"]`).forEach(el => { el.textContent = val; });
+    });
+    if (data.phone) {
+      const link = document.getElementById('hc-phone-link');
+      if (link) link.href = 'tel:' + data.phone.replace(/[\s–\-]/g,'');
+    }
+  } catch {}
+}
+loadContent();
+
+// ════════════════════════════════════
+//  VISUAL EDITOR
+//  Aktivierung: 3× Klick auf Footer-Copyright
+// ════════════════════════════════════
+let footerClicks = 0, footerTimer;
+document.getElementById('footer-copy').addEventListener('click', () => {
+  footerClicks++;
+  clearTimeout(footerTimer);
+  footerTimer = setTimeout(() => { footerClicks = 0; }, 600);
+  if (footerClicks >= 3) { footerClicks = 0; startEditor(); }
+});
+
+let editorActive = false;
+let currentEdits = {};
+let activePopup = null;
+let activeEl = null;
+
+function startEditor() {
+  if (editorActive) return;
+  editorActive = true;
+  document.body.classList.add('edit-mode');
+  document.body.style.paddingTop = '50px';
+
+  // Toolbar
+  const tb = document.createElement('div');
+  tb.id = 'edit-toolbar';
+  tb.className = 'edit-toolbar';
+  tb.innerHTML = `
+    <span style="font-size:16px">✏️</span>
+    <strong>Bearbeitungs-Modus</strong>
+    <span class="hint">Klicke auf markierte (blaue) Felder um Text zu ändern</span>
+    <div class="edit-toolbar-btns">
+      <button class="et-btn et-btn-save" onclick="saveEdits()">💾 Speichern</button>
+      <button class="et-btn et-btn-exit" onclick="stopEditor()">✕ Beenden</button>
+    </div>`;
+  document.body.prepend(tb);
+
+  // Activate all editable fields
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    el.addEventListener('click', onEditClick);
+  });
+
+  editToast('Editor aktiv – klicke auf blaue Felder');
+}
+
+function stopEditor() {
+  editorActive = false;
+  document.body.classList.remove('edit-mode');
+  document.body.style.paddingTop = '';
+  document.getElementById('edit-toolbar')?.remove();
+  closePopup();
+  document.querySelectorAll('[data-edit]').forEach(el => {
+    el.classList.remove('editing');
+    el.removeEventListener('click', onEditClick);
+  });
+}
+
+function onEditClick(e) {
+  if (!editorActive) return;
+  e.stopPropagation();
+  const el = e.currentTarget;
+  openPopup(el);
+}
+
+function openPopup(el) {
+  closePopup();
+  activeEl = el;
+  el.classList.add('editing');
+
+  const key = el.getAttribute('data-edit');
+  const current = currentEdits[key] ?? el.textContent.trim();
+  const isLong = current.length > 60;
+  const rect = el.getBoundingClientRect();
+
+  const pop = document.createElement('div');
+  pop.className = 'field-popup';
+  pop.id = 'field-popup';
+
+  // Position: below element if room, else above
+  const topPos = rect.bottom + window.scrollY + 8;
+  const leftPos = Math.max(8, Math.min(rect.left + window.scrollX, window.innerWidth - 316));
+  pop.style.cssText = `top:${topPos}px;left:${leftPos}px`;
+
+  pop.innerHTML = `
+    <div class="field-popup-label">✏️ ${key}</div>
+    ${isLong
+      ? `<textarea id="fp-input" rows="4">${current}</textarea>`
+
+```
+  : `<input id="fp-input" type="text" value="${current.replace(/"/g,'&quot;')}">`
+}
+<div class="field-popup-btns">
+  <button class="fp-ok" onclick="applyEdit('${key}')">Übernehmen ✓</button>
+  <button class="fp-cancel" onclick="closePopup()">✕</button>
+</div>`;
+```
+
+document.body.appendChild(pop);
+activePopup = pop;
+
+const inp = document.getElementById(‘fp-input’);
+inp.focus();
+if (!isLong) { inp.select(); }
+inp.addEventListener(‘keydown’, ev => {
+if (ev.key === ‘Enter’ && !isLong) { ev.preventDefault(); applyEdit(key); }
+if (ev.key === ‘Escape’) closePopup();
+});
+}
+
+function applyEdit(key) {
+const inp = document.getElementById(‘fp-input’);
+if (!inp) return;
+const val = inp.value;
+currentEdits[key] = val;
+
+// Update all matching elements
+document.querySelectorAll(`[data-edit="${key}"]`).forEach(el => { el.textContent = val; });
+
+// Update phone link
+if (key === ‘phone’ || key === ‘cta-phone’) {
+const link = document.getElementById(‘hc-phone-link’);
+if (link) link.href = ‘tel:’ + val.replace(/[\s–-]/g,’’);
+}
+closePopup();
+editToast(‘✓ Geändert – klicke Speichern wenn du fertig bist’);
+}
+
+function closePopup() {
+document.getElementById(‘field-popup’)?.remove();
+activePopup = null;
+document.querySelectorAll(’[data-edit]’).forEach(el => el.classList.remove(‘editing’));
+activeEl = null;
+}
+
+async function saveEdits() {
+if (Object.keys(currentEdits).length === 0) { editToast(‘Keine Änderungen’); return; }
+try {
+const res = await fetch(‘save_content.php’, {
+method: ‘POST’,
+headers: { ‘Content-Type’: ‘application/json’ },
+body: JSON.stringify(currentEdits)
+});
+const data = await res.json();
+if (data.ok) { editToast(‘✅ Gespeichert! Website aktualisiert.’); currentEdits = {}; }
+else { editToast(’Fehler: ’ + (data.error || ‘Unbekannt’)); }
+} catch {
+// Fallback: copy JSON for manual paste
+navigator.clipboard?.writeText(JSON.stringify(currentEdits, null, 2));
+editToast(‘ℹ️ save_content.php fehlt – JSON kopiert’);
+}
+}
+
+function editToast(msg) {
+document.getElementById(‘edit-toast’)?.remove();
+const t = document.createElement(‘div’);
+t.id = ‘edit-toast’; t.className = ‘edit-toast’; t.textContent = msg;
+document.body.appendChild(t);
+setTimeout(() => t.remove(), 2800);
+}
+
+// Close popup on outside click
+document.addEventListener(‘click’, e => {
+if (activePopup && !activePopup.contains(e.target) && !activeEl?.contains(e.target)) closePopup();
+});
+</script>
+
+</body>
+</html>
